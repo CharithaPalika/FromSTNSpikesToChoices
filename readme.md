@@ -1,4 +1,11 @@
 # 🧠 Spiking STN–GPe and Basal Ganglia Decision-Making Framework for Normal, PD, and DBS Conditions
+
+
+## 📌 About This Project  
+This repository is also used for the *Brain Modelling Workshop* conducted by **NeuroGATI**.  
+Learn more: https://www.neurogati.com/
+
+
 This repository provides a computational framework for studying **neural synchrony, pathological oscillations, and decision-making behavior** in Normal and Parkinsonian conditions using:
 
 1. 🔹 A **biophysical spiking STN–GPe neural network**, and  
