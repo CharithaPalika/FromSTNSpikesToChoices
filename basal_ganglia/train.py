@@ -26,19 +26,17 @@ def run_STN_GPe_system(yaml_path):
     Analysis_= Analysis(spikes_data)
     rate_data = Analysis_.spike_rate(binsize = 100)
     STN_4_processed = rate_data['processed_stn']
-    # STN_4 = torch.tensor(np.array([rate_data['1'], rate_data['2'], rate_data['3'], rate_data['4']]))
-    # STN_4_processed = torch.mean(STN_4.reshape(4,-1,100), dim = 2)
-    # plt.plot(STN_4_processed[0,:])
-    # plt.plot(STN_4_processed[1,:])
-    # plt.plot(STN_4_processed[2,:])
-    # plt.plot(STN_4_processed[3,:])
-    # plt.show()
     ts = torch.tensor(STN_4_processed).T      # shape (time, 4)
     print(torch.mean(torch.std(ts, dim = 1)))
+    
     mu = ts.mean(axis=0)           # mean of each column
     ts_shifted = ts + (1 - mu)     # shift each column
     print(torch.mean(ts_shifted), torch.mean(torch.std(ts_shifted, dim = 1)))
-    return ts_shifted #STN_4_PD_processed.T # shape (time, 4)
+    stn_out = torch.randn((1000,4)) * torch.mean(torch.std(ts_shifted, dim = 1)) + 1
+    print(torch.mean(stn_out), torch.mean(torch.std(stn_out, dim = 1)))
+    # rewrite ts_shifted as same shape torc htensor but with random number with ,eam amd std
+    # ts_shifted = torch.randn_like(ts_shifted) * torch.std(ts_shifted, dim = 0) + 1
+    return stn_out #ts_shifted
 
 def train(env, trails, epochs, bins, lr , 
           d1_amp = 1, d2_amp = 5, gpi_threshold = 3, max_gpi_iters = 250,
@@ -88,7 +86,7 @@ def train(env, trails, epochs, bins, lr ,
         for trail in range(trails):
             ep_monitor[epoch, trail] = ep
             bin_num = int(trail//picks_per_bin)
-            rand_num = np.random.choice(50)#(900)
+            rand_num = np.random.choice(900)#np.random.choice(50)#(900)
             if STN_data is None:
                 stn_output = torch.randn((1,max_gpi_iters,num_arms), requires_grad= False) * ep + gpi_mean 
                 # print(stn_output.shape)
